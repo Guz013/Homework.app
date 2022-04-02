@@ -1,4 +1,11 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Files to be ignored by ESlint and Prettier
+
+pnpm-lock.yaml
+
+sw.js
+sw.js.map
+workbox-*.js
+workbox-*.js.map
 
 # dependencies
 /node_modules
@@ -31,6 +38,4 @@ yarn-error.log*
 .env.production.local
 
 # vercel
-.vercel
-
 .vercel
