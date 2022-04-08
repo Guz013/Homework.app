@@ -1,6 +1,8 @@
-import Head from 'next/head';
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
+
+import Head from 'next/head';
+import SideBar from '@components/sideBar';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	return (
@@ -14,7 +16,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				/>
 				<meta name='description' content='Description' />
 				<meta name='keywords' content='Keywords' />
-				<title>Next.js PWA Example</title>
+				<title>Homework.app</title>
 
 				<link rel='manifest' href='/manifest.json' />
 				<link
@@ -32,7 +34,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel='apple-touch-icon' href='/apple-icon.png'></link>
 				<meta name='theme-color' content='#317EFB' />
 			</Head>
-			<Component {...pageProps} />
+			<div className='bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 w-full h-full'>
+				<SideBar/>
+				<main className='z-10'>
+					<Component {...pageProps} />
+				</main>
+			</div>
 		</>
 	);
 }

@@ -1,0 +1,7 @@
+{
+	"cSpell.words": [
+		"heroicons",
+		"Swipeable"
+	],
+	"typescript.tsdk": "node_modules\\typescript\\lib"
+}
