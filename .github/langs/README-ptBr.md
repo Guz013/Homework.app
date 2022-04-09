@@ -6,41 +6,41 @@ _[homework-guz.vercel.app][appurl]_
 
 [![guz-badge]][guzurl] ![license-badge] ![version-badge] [![production-status-badge]][appurl] [![preview-status-badge]][previewurl]
 
-> This is a personal project created for learning purposes. It isn't intended to be a complete, full-featured, or user-ready web application.
+> Este é um projeto pessoal criado para fins de aprendizado. Ele não tem o objetivo de ser um aplicativo completo, cheio de recursos ou pronto para o usuário final.
 
-[:us:](./README.md) - [:brazil:](./langs/README-ptBr.md)
+[:us:](./../README.md) - [:brazil:](./README-ptBr.md)
 
 </div>
 
 ---
 
-## About & Idea :bulb:
+## Sobre & Ideia :bulb:
 
-An app designed to help students with some concepts learned in school, primarily things that can be tedious to do or that simply look good to see in action (like graphs, physics, etc.).
+Um aplicativo projetado para ajudar alunos com alguns conceitos aprendidos na escola, principalmente coisas que podem ser tediosas de fazer ou que simplesmente parecem satisfatórias de ver em ação (como graficos, física, etc.).
 
-It's made to have the most satisfying interface and gestures possible, following a minimalistic style, with smooth colors and contrasts with black and white.
+Ele é feito para ter a interface e os gestos mais satisfatórios possíveis, seguindo um estilo minimalista, com cores suaves e contrastes com preto e branco.
 
-## Purpose :sparkles:
+## Propósito :sparkles:
 
-The web application is primarily created as a learning project, focusing on these concepts mainly:
+A aplicação é criada principalmente como um projeto de aprendizagem, focando primáriamente nestes conceitos:
 
-- :art: UI/UX design;
-- :iphone: Mobile-first and responsive interface;
-- :gear: Configurable application;
-- :brazil: Multiple languages support;
-- :black_nib: Animations;
-- :atom_symbol: Learn more about React/Next.js;
+- :art: Design de UI/UX;
+- :iphone: Interface para mobile e responsiva;
+- :gear: Aplicação configurável;
+- :us: Suporte para multiplos idiomas;
+- :black_nib: Animações;
+- :atom_symbol: Aprender mais sobre React/Next.js;
 
-## Tools :toolbox:
+## Ferramentas :toolbox:
 
-These are the main tools, packages, technologies used in this project:
+Esses são as principais ferramentas, tecnologias, modulos utilizados neste projeto:
 
 <table>
 	<thead>
-		<th><b>Framework / Environment</b></th>
+		<th><b>Framework / Ambiente</b></th>
 		<th><b>Design</b></th>
-		<th><b>Development</b></th>
-		<th><b>Deployment</b></th>
+		<th><b>Desenvolvimento</b></th>
+		<th><b>Hospedagem</b></th>
 	</thead>
 	<tbody>
 		<th>
@@ -64,14 +64,13 @@ These are the main tools, packages, technologies used in this project:
 	</tbody>
 </table>
 
-> Other tools are used, but they are not totally essential to the project. Also, the tools listed are personal preferences and are chosen for a better development experience.
+> Outras ferramentas são utilizadas, mas não são totalmente essenciais ao projeto. Além disso, as ferramentas listdas são preferências pessoais e são escolhidas para uma melhor experiência de desenvolvimento.
 
-## License :page_facing_up:
+## Licença :page_facing_up:
 
-The content of the application and project itself is licensed under the [CC-BY-SA 4.0 License][cclicenseurl], and the underlying source code used to display, format and interact with the content is licensed under the [MIT License][mitlicenseurl].
+O conteúdo do aplicativo e do projeto em si é licenciado sob a [Licença CC-BY-SA 4.0][cclicenseurl], e o código-fonte subjacente usado para exibir, formatar e interagir com o conteúdo é licenciado sob a [Licença MIT][mitlicenseurl].
 
-<img src='./misc/watermark.png' width='25'> &copy; 2022 Gustavo "Guz" L. de Mello
-
+<img src='./../misc/watermark.png' width='25'> &copy; 2022 Gustavo "Guz" L. de Mello
 
 [guzurl]: https://guz.vercel.app
 [appurl]: https://homework-guz.vercel.app
