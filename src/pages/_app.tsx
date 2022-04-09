@@ -1,10 +1,19 @@
 import '../styles/globals.css';
+import 'katex/dist/katex.min.css';
 import { AppProps } from 'next/app';
+import { createContext, useState } from 'react';
 
 import Head from 'next/head';
 import SideBar from '@components/sideBar';
 
+export const LangContext = createContext({
+	value: 'en',
+	setLang: (newLang: string) => {},
+});
+
 export default function MyApp({ Component, pageProps }: AppProps) {
+	const [value, setLang] = useState('en');
+
 	return (
 		<>
 			<Head>
@@ -34,12 +43,14 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel='apple-touch-icon' href='/apple-icon.png'></link>
 				<meta name='theme-color' content='#317EFB' />
 			</Head>
-			<div className='bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 w-full h-full'>
-				<SideBar/>
-				<main className='z-10'>
-					<Component {...pageProps} />
-				</main>
-			</div>
+			<LangContext.Provider value={{ value, setLang }}>
+				<div className='bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 w-full h-full'>
+					<SideBar />
+					<main className='z-10'>
+						<Component {...pageProps} />
+					</main>
+				</div>
+			</LangContext.Provider>
 		</>
 	);
 }
