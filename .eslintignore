@@ -1,5 +1,8 @@
 # Files to be ignored by ESlint and Prettier
 
+.vscode
+
+package.json
 pnpm-lock.yaml
 
 sw.js
