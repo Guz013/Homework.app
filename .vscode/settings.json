@@ -1,6 +1,7 @@
 {
 	"cSpell.words": [
 		"heroicons",
+		"pnpm",
 		"Swipeable"
 	],
 	"typescript.tsdk": "node_modules\\typescript\\lib"
