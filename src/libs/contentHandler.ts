@@ -1,50 +1,58 @@
+import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs';
-import path, { join } from 'path';
+import { join } from 'path';
 
-const contentDirectory = join(process.cwd(), 'content');
+export async function getContentProps(
+	path: string,
+	lang: string = 'en',
+	recursive: boolean = true
+) {
+	/**
+	 * TODO: [ ] Return a file, in english (default language), if the translation doesn't exist;
+	 * TODO: [ ] Specify the return type;
+	 */
 
-type FolderItem = {
-	lang: string;
-	contents: {
-		name: string;
-		text: string;
-	}[];
-};
+	path = join(process.cwd(), `src/content/${lang}/${path}`);
 
-const contentHandler = {
-	folders: () => {
-		const result: FolderItem[] = [];
+	if (fs.existsSync(path + '.mdx') || !fs.lstatSync(path).isDirectory()) {
+		const fileData = await serialize(fs.readFileSync(path + '.mdx', 'utf8'));
 
-		const langFolders = fs.readdirSync(contentDirectory);
+		return { props: { content: { data: fileData, lang } } };
+	}
 
-		for (const folder of langFolders) {
-			const folderItem: FolderItem = {
-				lang: `${folder}`,
-				contents: Array(),
-			};
+	const fileList: { [fileName: string]: any } = {};
 
-			const contentFiles = fs.readdirSync(join(contentDirectory, `${folder}`));
+	readDirectoryFiles(
+		path,
+		async (fileName: string, fileData: string) => {
+			fileList[fileName.replace('.mdx', '')] = await serialize(fileData);
+		},
+		recursive
+	);
 
-			for (const file of contentFiles) {
-				const fileContents = fs.readFileSync(
-					join(contentDirectory, `${folder}/${file}`),
-					'utf-8'
-				);
+	return { props: { content: { data: fileList, lang } } };
+}
 
-				folderItem.contents.push({ name: `${file}`, text: fileContents });
-			}
+export function readDirectoryFiles(
+	path: string,
+	onRead: (file: string, data: string) => any,
+	recursive?: boolean
+) {
+	for (const file of fs.readdirSync(path)) {
+		const filePath = join(path, file);
 
-			result.push(folderItem);
+		if (recursive && fs.lstatSync(filePath).isDirectory()) {
+			readDirectoryFiles(
+				filePath,
+				(nestedFile, nestedData) => {
+					onRead(nestedFile, nestedData);
+				},
+				true
+			);
+		} else if (!fs.lstatSync(filePath).isDirectory()) {
+			const data = fs.readFileSync(filePath, 'utf8');
+
+			onRead(file, data);
 		}
-
-		return result;
-	},
-	langContents: (lang: string) => {
-		return (
-			contentHandler.folders().find((f) => f.lang === lang)?.contents ??
-			contentHandler.folders().find((f) => f.lang === 'en')?.contents
-		);
-	},
-};
-
-export default contentHandler;
+	}
+}
