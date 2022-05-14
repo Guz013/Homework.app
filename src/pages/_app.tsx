@@ -12,8 +12,6 @@ export const LangContext = createContext({
 });
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-	const [value, setLang] = useState('en');
-
 	return (
 		<>
 			<Head>
@@ -43,14 +41,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel='apple-touch-icon' href='/apple-icon.png'></link>
 				<meta name='theme-color' content='#317EFB' />
 			</Head>
-			<LangContext.Provider value={{ value, setLang }}>
-				<div className='bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 w-full h-full'>
-					<SideBar />
-					<main className='z-10'>
-						<Component {...pageProps} />
-					</main>
-				</div>
-			</LangContext.Provider>
+			<div className='bg-zinc-100 text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 w-full h-full'>
+				<SideBar />
+				<main className='z-10'>
+					<Component {...pageProps} />
+				</main>
+			</div>
 		</>
 	);
 }
