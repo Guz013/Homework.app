@@ -5,25 +5,26 @@
 package.json
 pnpm-lock.yaml
 
-sw.js
-sw.js.map
-workbox-*.js
-workbox-*.js.map
+public/sw.js
+public/sw.js.map
+public/workbox-*
+
+# pnpm
+pnpm-*
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # next.js
-/.next/
-/out/
+.next
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -33,6 +34,7 @@ workbox-*.js.map
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # local env files
 .env.local

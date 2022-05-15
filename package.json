@@ -6,9 +6,9 @@
 		"start": "next start",
 		"preview": "pnpm run build && pnpm run start",
 		"lint:js": "next lint --ignore-path .eslintignore .",
-		"lint:prettier": "prettier --ignore-path .eslintignore .",
-		"lint": "pnpm run lint:js && pnpm run lint:prettier -- --check",
-		"lint:fix": "pnpm run lint:js -- --fix && pnpm run lint:prettier -- --write --list-different"
+		"lint:prettier": "prettier --ignore-path ./.eslintignore --check .",
+		"lint": "pnpm run lint:js && prettier --ignore-path ./.eslintignore --check .",
+		"lint:fix": "next lint --ignore-path .eslintignore --fix . && prettier --ignore-path ./.eslintignore --write --list-different ."
 	},
 	"dependencies": {
 		"@mdx-js/loader": "^2.1.1",
@@ -44,8 +44,8 @@
 		"micromark-extension-math": "^2.0.2",
 		"postcss": "^8.4.12",
 		"postcss-import": "^14.1.0",
-		"prettier": "^2.6.1",
-		"prettier-plugin-tailwindcss": "^0.1.8",
+		"prettier": "^2.6.2",
+		"prettier-plugin-tailwindcss": "^0.1.10",
 		"react-konva": "^16.8.0 || ^17.0.0",
 		"react-native": ">=0.64.0",
 		"react-spring": "^9.4.4",
