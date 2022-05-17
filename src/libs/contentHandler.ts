@@ -6,6 +6,7 @@ import { join } from 'path';
 async function getContentProps(
 	path: string,
 	lang: string = 'en',
+	returnTranslationFile: boolean = true,
 	recursive: boolean = true
 ): Promise<ContentProps> {
 	/**
@@ -14,10 +15,20 @@ async function getContentProps(
 
 	path = join(process.cwd(), `src/content/${lang}/${path}`);
 
+	const translations = returnTranslationFile ? getTranslationFile(lang) : null;
+
 	if (fs.existsSync(path + '.mdx') || !fs.lstatSync(path).isDirectory()) {
 		const fileData = await serialize(fs.readFileSync(path + '.mdx', 'utf8'));
 
-		return { props: { content: { data: fileData, lang } } };
+		return {
+			props: {
+				content: {
+					data: fileData,
+					lang,
+					translations,
+				},
+			},
+		};
 	}
 
 	const fileList: { [fileName: string]: MDXRemoteSerializeResult } = {};
@@ -30,8 +41,34 @@ async function getContentProps(
 		recursive
 	);
 
-	return { props: { content: { data: fileList, lang } } };
+	return {
+		props: {
+			content: {
+				data: fileList,
+				lang,
+				translations,
+			},
+		},
+	};
+}
 export default getContentProps;
+
+export function getTranslationFile(lang: string = 'en'): object {
+	const translationPath = join(
+		process.cwd(),
+		`src/content/${lang}/translations.json`
+	);
+
+	const translationFile = fs.lstatSync(translationPath).isFile()
+		? JSON.parse(fs.readFileSync(translationPath, 'utf8'))
+		: JSON.parse(
+				fs.readFileSync(
+					join(process.cwd(), `src/content/en/translations.json`),
+					'utf8'
+				)
+		  );
+
+	return translationFile;
 }
 
 export function readDirectoryFiles(
