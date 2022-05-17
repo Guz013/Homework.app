@@ -1,5 +1,4 @@
 import { serialize } from 'next-mdx-remote/serialize';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import fs from 'fs';
 import { join } from 'path';
 
@@ -9,42 +8,35 @@ async function getContentProps(
 	returnTranslationFile: boolean = true,
 	recursive: boolean = true
 ): Promise<ContentProps> {
-	/**
-	 * TODO: Return a file, in english (default language), if the translation doesn't exist;
-	 */
-
+	const defaultPath = join(process.cwd(), `src/content/en/${path}`);
 	path = join(process.cwd(), `src/content/${lang}/${path}`);
 
 	const translations = returnTranslationFile ? getTranslationFile(lang) : null;
 
-	if (fs.existsSync(path + '.mdx') || !fs.lstatSync(path).isDirectory()) {
+	if (
+		fs.existsSync(path + '.mdx') ||
+		(fs.existsSync(path) && !fs.lstatSync(path).isDirectory())
+	) {
 		const fileData = await serialize(fs.readFileSync(path + '.mdx', 'utf8'));
 
+		return { props: { content: { data: fileData, lang, translations } } };
+	} else if (
+		fs.existsSync(defaultPath + '.mdx') ||
+		(fs.existsSync(path) && !fs.lstatSync(defaultPath).isDirectory())
+	) {
+		const defaultFileData = await serialize(
+			fs.readFileSync(defaultPath + '.mdx', 'utf8')
+		);
+
 		return {
-			props: {
-				content: {
-					data: fileData,
-					lang,
-					translations,
-				},
-			},
+			props: { content: { data: defaultFileData, lang, translations } },
 		};
 	}
-
-	const fileList: { [fileName: string]: MDXRemoteSerializeResult } = {};
-
-	readDirectoryFiles(
-		path,
-		async (fileName: string, fileData: string) => {
-			fileList[fileName.replace('.mdx', '')] = await serialize(fileData);
-		},
-		recursive
-	);
 
 	return {
 		props: {
 			content: {
-				data: fileList,
+				data: await getContentList(path, recursive),
 				lang,
 				translations,
 			},
@@ -52,6 +44,36 @@ async function getContentProps(
 	};
 }
 export default getContentProps;
+
+export async function getContentList(
+	path: string,
+	recursive: boolean = true
+): Promise<ContentList> {
+	const fileList: ContentList = {};
+
+	await readDirectoryFiles(
+		path,
+		async (fileName: string, fileData: string) => {
+			fileList[fileName.replace('.mdx', '')] = await serialize(fileData);
+		},
+		recursive
+	);
+
+	const defaultPath = path.replace(/content\\(.*?){2}\\/, 'content\\en\\');
+	const defaultFileList: ContentList = {};
+
+	await readDirectoryFiles(
+		defaultPath,
+		async (fileName: string, fileData: string) => {
+			defaultFileList[fileName.replace('.mdx', '')] = await serialize(fileData);
+			fileList[fileName.replace('.mdx', '')] =
+				fileList[fileName.replace('.mdx', '')] || (await serialize(fileData));
+		},
+		recursive
+	);
+
+	return fileList;
+}
 
 export function getTranslationFile(lang: string = 'en'): object {
 	const translationPath = join(
@@ -71,7 +93,7 @@ export function getTranslationFile(lang: string = 'en'): object {
 	return translationFile;
 }
 
-export function readDirectoryFiles(
+export async function readDirectoryFiles(
 	path: string,
 	onRead: (file: string, data: string) => any,
 	recursive?: boolean
@@ -93,18 +115,4 @@ export function readDirectoryFiles(
 			onRead(file, data);
 		}
 	}
-}
-
-export interface ContentProps {
-	props: {
-		content: {
-			data:
-				| {
-						[fileName: string]: MDXRemoteSerializeResult;
-				  }
-				| MDXRemoteSerializeResult;
-			lang: string;
-			translations?: any;
-		};
-	};
 }
