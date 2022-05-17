@@ -1,7 +1,7 @@
 import type { NextPage, GetStaticProps } from 'next';
 import Link from 'next/link';
-import { MDXRemote as MD } from 'next-mdx-remote';
-import { getContentProps } from '@libs/contentHandler';
+import { MDXRemote as MD, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import getContentProps from '@libs/contentHandler';
 
 const Home: NextPage = ({ content }: any) => {
 	return (

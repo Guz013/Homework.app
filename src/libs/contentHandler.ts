@@ -1,15 +1,15 @@
 import { serialize } from 'next-mdx-remote/serialize';
+import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import fs from 'fs';
 import { join } from 'path';
 
-export async function getContentProps(
+async function getContentProps(
 	path: string,
 	lang: string = 'en',
 	recursive: boolean = true
-) {
+): Promise<ContentProps> {
 	/**
-	 * TODO: [ ] Return a file, in english (default language), if the translation doesn't exist;
-	 * TODO: [ ] Specify the return type;
+	 * TODO: Return a file, in english (default language), if the translation doesn't exist;
 	 */
 
 	path = join(process.cwd(), `src/content/${lang}/${path}`);
@@ -20,7 +20,7 @@ export async function getContentProps(
 		return { props: { content: { data: fileData, lang } } };
 	}
 
-	const fileList: { [fileName: string]: any } = {};
+	const fileList: { [fileName: string]: MDXRemoteSerializeResult } = {};
 
 	readDirectoryFiles(
 		path,
@@ -31,6 +31,7 @@ export async function getContentProps(
 	);
 
 	return { props: { content: { data: fileList, lang } } };
+export default getContentProps;
 }
 
 export function readDirectoryFiles(
@@ -55,4 +56,18 @@ export function readDirectoryFiles(
 			onRead(file, data);
 		}
 	}
+}
+
+export interface ContentProps {
+	props: {
+		content: {
+			data:
+				| {
+						[fileName: string]: MDXRemoteSerializeResult;
+				  }
+				| MDXRemoteSerializeResult;
+			lang: string;
+			translations?: any;
+		};
+	};
 }
