@@ -3,13 +3,13 @@ import fs from 'fs';
 import { join } from 'path';
 
 async function getContentProps(
-	path: string,
+	contentPath: string,
 	lang: string = 'en',
 	returnTranslationFile: boolean = true,
 	recursive: boolean = true
 ): Promise<ContentProps> {
-	const defaultPath = join(process.cwd(), `src/content/en/${path}`);
-	path = join(process.cwd(), `src/content/${lang}/${path}`);
+	const defaultPath = join(process.cwd(), `src/content/en/${contentPath}`);
+	const path = join(process.cwd(), `src/content/${lang}/${contentPath}`);
 
 	const translations = returnTranslationFile ? getTranslationFile(lang) : null;
 
@@ -36,7 +36,7 @@ async function getContentProps(
 	return {
 		props: {
 			content: {
-				data: await getContentList(path, recursive),
+				data: await getContentList(contentPath, lang, recursive),
 				lang,
 				translations,
 			},
@@ -47,9 +47,13 @@ export default getContentProps;
 
 export async function getContentList(
 	path: string,
+	lang: string = 'en',
 	recursive: boolean = true
 ): Promise<ContentList> {
 	const fileList: ContentList = {};
+
+	const defaultPath = join(process.cwd(), `src/content/en/${path}`);
+	path = join(process.cwd(), `src/content/${lang}/${path}`);
 
 	await readDirectoryFiles(
 		path,
@@ -59,7 +63,6 @@ export async function getContentList(
 		recursive
 	);
 
-	const defaultPath = path.replace(/content\\(.*?){2}\\/, 'content\\en\\');
 	const defaultFileList: ContentList = {};
 
 	await readDirectoryFiles(
