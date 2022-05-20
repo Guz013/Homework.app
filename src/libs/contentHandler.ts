@@ -2,6 +2,38 @@ import { serialize } from 'next-mdx-remote/serialize';
 import fs from 'fs';
 import { join } from 'path';
 
+/**
+ * Returns a prop object (designed for `getStaticProps()`) with a dictionary of all serialized files inside a directory,
+ * or a single file if it's specified on the path and a translations file. If a file doesn't have a translation, it will
+ * be returned a file in the default language (english).
+ *
+ * @param contentPath - The path to the directory or file inside the `src/content` folder;
+ * @param lang - In what language to return the content _(default english)_;
+ * @param returnTranslationFile - Return the Translations File? _(default true)_;
+ * @param recursive - Search for files inside sub-folders? _(default true)_;
+ * @returns The serialized data of all files, language used and the translations file (a _{@link ContentProps}_ object);
+ *
+ * @remarks
+ *
+ * @example
+ * A simple example of how to use the function:
+ * ```tsx
+ * import { MDXRemote as MD } from 'next-mdx-remote';
+ *
+ * const Page: NextPage = ({ content }: any) => {
+ * 	const [text, translations]: [ContentList, object | any] = [
+ *			content.data,
+ *			content.translations,
+ *		];
+ *		return (<div>
+ *			<MD {...text['helloWorld']} />
+ *			{translations?.words.yes}
+ *		</div>);
+ * };
+ *
+ * export const getStaticProps: GetStaticProps = async ({ locale }) => getContentProps('test/testDir', locale);
+ * ```
+ */
 async function getContentProps(
 	contentPath: string,
 	lang: string = 'en',
@@ -45,6 +77,17 @@ async function getContentProps(
 }
 export default getContentProps;
 
+/**
+ * Creates and returns a list/dictionary of serialized content files inside a folder of a language.
+ * If a translation is not found, it will be replaced with one of the default language.
+ *
+ * @param path - The path to the directory inside the `src/content` folder;
+ * @param lang - What language to search for the translation _(default english)_;
+ * @param recursive - Search for files inside sub-folders? _(default true)_;
+ * @returns A object with all files in the directory (a _{@link ContentList}_ object);
+ *
+ * @see {@link getContentProps} if you need data more compatible with Nextjs's `getStaticProps` method.
+ */
 export async function getContentList(
 	path: string,
 	lang: string = 'en',
@@ -78,6 +121,13 @@ export async function getContentList(
 	return fileList;
 }
 
+/**
+ * Read and parse the Translations json file of a specified language.
+ * If the file doesn't exist, returns one in the default language.
+ *
+ * @param lang - What language to read the file from.
+ * @returns The parsed json file contents.
+ */
 export function getTranslationFile(lang: string = 'en'): object {
 	const translationPath = join(
 		process.cwd(),
@@ -96,6 +146,13 @@ export function getTranslationFile(lang: string = 'en'): object {
 	return translationFile;
 }
 
+/**
+ * Reads all files inside a directory.
+ *
+ * @param path - Path to the directory/folder;
+ * @param onRead - A functions that will be called when the file is read;
+ * @param recursive - Search for files inside sub-folders?
+ */
 export async function readDirectoryFiles(
 	path: string,
 	onRead: (file: string, data: string) => any,

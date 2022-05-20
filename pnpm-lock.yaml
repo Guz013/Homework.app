@@ -19,6 +19,7 @@ specifiers:
   eslint: ^8.12.0
   eslint-config-next: ^12.1.4
   eslint-config-prettier: ^8.5.0
+  eslint-plugin-tsdoc: ^0.2.16
   katex: ^0.15.3
   konva: '>=2.6'
   micromark: ^3.0.10
@@ -75,6 +76,7 @@ devDependencies:
   eslint: 8.15.0
   eslint-config-next: 12.1.6_qjmf6zrccgre5apqymamyvfe4y
   eslint-config-prettier: 8.5.0_eslint@8.15.0
+  eslint-plugin-tsdoc: 0.2.16
   konva: 8.3.8
   micromark: 3.0.10
   micromark-extension-math: 2.0.2
@@ -1489,6 +1491,19 @@ packages:
       '@types/react': 17.0.38
       react: 18.1.0
     dev: false
+
+  /@microsoft/tsdoc-config/0.16.1:
+    resolution: {integrity: sha512-2RqkwiD4uN6MLnHFljqBlZIXlt/SaUT6cuogU1w2ARw4nKuuppSmR0+s+NC+7kXBQykd9zzu0P4HtBpZT5zBpQ==}
+    dependencies:
+      '@microsoft/tsdoc': 0.14.1
+      ajv: 6.12.6
+      jju: 1.4.0
+      resolve: 1.19.0
+    dev: true
+
+  /@microsoft/tsdoc/0.14.1:
+    resolution: {integrity: sha512-6Wci+Tp3CgPt/B9B0a3J4s3yMgLNSku6w5TV6mN+61C71UqsRBv2FUibBf3tPGlNxebgPHMEUzKpb1ggE8KCKw==}
+    dev: true
 
   /@next/env/12.1.6:
     resolution: {integrity: sha512-Te/OBDXFSodPU6jlXYPAXpmZr/AkG6DCATAxttQxqOWaq6eDFX25Db3dK0120GZrSZmv4QCe9KsZmJKDbWs4OA==}
@@ -3999,6 +4014,13 @@ packages:
       string.prototype.matchall: 4.0.7
     dev: true
 
+  /eslint-plugin-tsdoc/0.2.16:
+    resolution: {integrity: sha512-F/RWMnyDQuGlg82vQEFHQtGyWi7++XJKdYNn0ulIbyMOFqYIjoJOUdE6olORxgwgLkpJxsCJpJbTHgxJ/ggfXw==}
+    dependencies:
+      '@microsoft/tsdoc': 0.14.1
+      '@microsoft/tsdoc-config': 0.16.1
+    dev: true
+
   /eslint-scope/5.1.1:
     resolution: {integrity: sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==}
     engines: {node: '>=8.0.0'}
@@ -5136,6 +5158,10 @@ packages:
   /jetifier/1.6.8:
     resolution: {integrity: sha512-3Zi16h6L5tXDRQJTb221cnRoVG9/9OvreLdLU2/ZjRv/GILL+2Cemt0IKvkowwkDpvouAU1DQPOJ7qaiHeIdrw==}
     hasBin: true
+    dev: true
+
+  /jju/1.4.0:
+    resolution: {integrity: sha1-o6vicYryQaKykE+EpiWXDzia4yo=}
     dev: true
 
   /joi/17.6.0:
@@ -7674,6 +7700,13 @@ packages:
   /resolve-url/0.2.1:
     resolution: {integrity: sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=}
     deprecated: https://github.com/lydell/resolve-url#deprecated
+    dev: true
+
+  /resolve/1.19.0:
+    resolution: {integrity: sha512-rArEXAgsBG4UgRGcynxWIWKFvh/XZCcS8UJdHhwy91zwAvCZIbcs+vAbflgBnNjYMs/i/i+/Ux6IZhML1yPvxg==}
+    dependencies:
+      is-core-module: 2.9.0
+      path-parse: 1.0.7
     dev: true
 
   /resolve/1.22.0:

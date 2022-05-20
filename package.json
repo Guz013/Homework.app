@@ -39,6 +39,7 @@
 		"eslint": "^8.12.0",
 		"eslint-config-next": "^12.1.4",
 		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-tsdoc": "^0.2.16",
 		"konva": ">=2.6",
 		"micromark": "^3.0.10",
 		"micromark-extension-math": "^2.0.2",
