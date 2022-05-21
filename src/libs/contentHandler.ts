@@ -15,10 +15,10 @@ export const defaultLang = 'en';
 /**
  * Returns a prop object (designed for `getStaticProps()`) with a dictionary of all serialized files inside a directory,
  * or a single file if it's specified on the path and a translations file. If a file doesn't have a translation, it will
- * be returned a file in the default language (english).
+ * be returned a file in the {@link defaultLang | default language}.
  *
  * @param contentPath - The path to the directory or file inside the {@link contentFolder | content folder};
- * @param lang - In what language to return the content _(default english)_;
+ * @param lang - In what language to return the content _(if undefined, it'll be used the {@link defaultLang | default language})_;
  * @param returnTranslationFile - Return the Translations File? _(default true)_;
  * @param recursive - Search for files inside sub-folders? _(default true)_;
  * @returns The serialized data of all files, language used and the translations file (a _{@link ContentProps}_ object);
@@ -92,7 +92,7 @@ export default getContentProps;
  * If a translation is not found, it will be replaced with one of the default language.
  *
  * @param path - The path to the directory inside the {@link contentFolder | content folder};
- * @param lang - What language to search for the translation _(default english)_;
+ * @param lang - What language to search for the translation _(if undefined, it'll be used the {@link defaultLang | default language})_;
  * @param recursive - Search for files inside sub-folders? _(default true)_;
  * @returns A object with all files in the directory (a _{@link ContentList}_ object);
  *
