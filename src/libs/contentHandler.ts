@@ -131,7 +131,64 @@ export async function getContentList(
 	return fileList;
 }
 
-export async function getTranslationPercentage(lang: string = 'en') {}
+/**
+ * Similar to {@link getTranslationPercentage}, but calculates all languages inside the {@link contentFolder | content folder}.
+ *
+ * @returns A list object of all languages with them corresponding percentages.
+ */
+export async function getAllTranslationsPercentages(): Promise<{
+	[lang: string]: number;
+}> {
+	const percentageList: { [lang: string]: number } = {};
+
+	for (const lang of fs.readdirSync(contentFolder)) {
+		if (!fs.lstatSync(join(contentFolder, lang)).isDirectory()) continue;
+		else if (lang === defaultLang) {
+			percentageList[defaultLang] = 100;
+			continue;
+		}
+
+		percentageList[lang] = await getTranslationPercentage(lang);
+	}
+
+	return percentageList;
+}
+
+/**
+ * Calculates how much a translation is completed,
+ * based on the number of files are missing compared to the default language.
+ *
+ * @param lang - The language to be compared _(if undefined, it'll be used the {@link defaultLang | default language})_.
+ *
+ * @returns The (rounded) percentage number.
+ */
+export async function getTranslationPercentage(
+	lang: string = 'en'
+): Promise<number> {
+	const fileList: string[] = [];
+
+	await readDirectoryFiles(
+		`${contentFolder}/${defaultLang}`,
+		(fileName: string) => {
+			if (fileName.endsWith('.json')) return;
+			fileList.push(fileName);
+		},
+		true
+	);
+
+	const translatedFileList: string[] = [];
+
+	await readDirectoryFiles(
+		`${contentFolder}/${lang}`,
+		(fileName: string) => {
+			if (fileName.endsWith('.json')) return;
+			translatedFileList.push(fileName);
+		},
+		true
+	);
+
+	return Math.round((translatedFileList.length * 100) / fileList.length);
+}
 
 /**
  * Read and parse the Translations json file of a specified language.
