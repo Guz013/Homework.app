@@ -5,7 +5,12 @@ import { join } from 'path';
 /**
  * The base path for the files to be searched on the functions.
  */
-const contentFolder = join(process.cwd(), 'src/content');
+export const contentFolder = join(process.cwd(), 'src/content');
+
+/**
+ * The default language witch have all files completed/translated;
+ */
+export const defaultLang = 'en';
 
 /**
  * Returns a prop object (designed for `getStaticProps()`) with a dictionary of all serialized files inside a directory,
@@ -41,11 +46,11 @@ const contentFolder = join(process.cwd(), 'src/content');
  */
 async function getContentProps(
 	contentPath: string,
-	lang: string = 'en',
+	lang: string = defaultLang,
 	returnTranslationFile: boolean = true,
 	recursive: boolean = true
 ): Promise<ContentProps> {
-	const defaultPath = `${contentFolder}/en/${contentPath}`;
+	const defaultPath = `${contentFolder}/${defaultLang}/${contentPath}`;
 	const path = `${contentFolder}/${lang}/${contentPath}`;
 
 	const translations = returnTranslationFile ? getTranslationFile(lang) : null;
@@ -95,7 +100,7 @@ export default getContentProps;
  */
 export async function getContentList(
 	path: string,
-	lang: string = 'en',
+	lang: string = defaultLang,
 	recursive: boolean = true
 ): Promise<ContentList> {
 	const fileList: ContentList = {};
@@ -135,13 +140,16 @@ export async function getTranslationPercentage(lang: string = 'en') {}
  * @param lang - What language to read the file from.
  * @returns The parsed json file contents.
  */
-export function getTranslationFile(lang: string = 'en'): object {
+export function getTranslationFile(lang: string = defaultLang): object {
 	const translationPath = `${contentFolder}/${lang}/translations.json`;
 
 	const translationFile = fs.lstatSync(translationPath).isFile()
 		? JSON.parse(fs.readFileSync(translationPath, 'utf8'))
 		: JSON.parse(
-				fs.readFileSync(`${contentFolder}/en/translations.json`, 'utf8')
+				fs.readFileSync(
+					`${contentFolder}/${defaultLang}/translations.json`,
+					'utf8'
+				)
 		  );
 
 	return translationFile;
