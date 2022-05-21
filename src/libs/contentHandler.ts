@@ -3,11 +3,16 @@ import fs from 'fs';
 import { join } from 'path';
 
 /**
+ * The base path for the files to be searched on the functions.
+ */
+const contentFolder = join(process.cwd(), 'src/content');
+
+/**
  * Returns a prop object (designed for `getStaticProps()`) with a dictionary of all serialized files inside a directory,
  * or a single file if it's specified on the path and a translations file. If a file doesn't have a translation, it will
  * be returned a file in the default language (english).
  *
- * @param contentPath - The path to the directory or file inside the `src/content` folder;
+ * @param contentPath - The path to the directory or file inside the {@link contentFolder | content folder};
  * @param lang - In what language to return the content _(default english)_;
  * @param returnTranslationFile - Return the Translations File? _(default true)_;
  * @param recursive - Search for files inside sub-folders? _(default true)_;
@@ -40,8 +45,8 @@ async function getContentProps(
 	returnTranslationFile: boolean = true,
 	recursive: boolean = true
 ): Promise<ContentProps> {
-	const defaultPath = join(process.cwd(), `src/content/en/${contentPath}`);
-	const path = join(process.cwd(), `src/content/${lang}/${contentPath}`);
+	const defaultPath = `${contentFolder}/en/${contentPath}`;
+	const path = `${contentFolder}/${lang}/${contentPath}`;
 
 	const translations = returnTranslationFile ? getTranslationFile(lang) : null;
 
@@ -81,7 +86,7 @@ export default getContentProps;
  * Creates and returns a list/dictionary of serialized content files inside a folder of a language.
  * If a translation is not found, it will be replaced with one of the default language.
  *
- * @param path - The path to the directory inside the `src/content` folder;
+ * @param path - The path to the directory inside the {@link contentFolder | content folder};
  * @param lang - What language to search for the translation _(default english)_;
  * @param recursive - Search for files inside sub-folders? _(default true)_;
  * @returns A object with all files in the directory (a _{@link ContentList}_ object);
@@ -95,8 +100,8 @@ export async function getContentList(
 ): Promise<ContentList> {
 	const fileList: ContentList = {};
 
-	const defaultPath = join(process.cwd(), `src/content/en/${path}`);
-	path = join(process.cwd(), `src/content/${lang}/${path}`);
+	const defaultPath = `${contentFolder}/en/${path}`;
+	path = `${contentFolder}/${lang}/${path}`;
 
 	await readDirectoryFiles(
 		path,
@@ -121,6 +126,8 @@ export async function getContentList(
 	return fileList;
 }
 
+export async function getTranslationPercentage(lang: string = 'en') {}
+
 /**
  * Read and parse the Translations json file of a specified language.
  * If the file doesn't exist, returns one in the default language.
@@ -129,18 +136,12 @@ export async function getContentList(
  * @returns The parsed json file contents.
  */
 export function getTranslationFile(lang: string = 'en'): object {
-	const translationPath = join(
-		process.cwd(),
-		`src/content/${lang}/translations.json`
-	);
+	const translationPath = `${contentFolder}/${lang}/translations.json`;
 
 	const translationFile = fs.lstatSync(translationPath).isFile()
 		? JSON.parse(fs.readFileSync(translationPath, 'utf8'))
 		: JSON.parse(
-				fs.readFileSync(
-					join(process.cwd(), `src/content/en/translations.json`),
-					'utf8'
-				)
+				fs.readFileSync(`${contentFolder}/en/translations.json`, 'utf8')
 		  );
 
 	return translationFile;
