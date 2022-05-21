@@ -24,7 +24,7 @@ const ThemeButton = () => {
 		<animated.button
 			onClick={darkMode.toggle}
 			className='min-h-8 min-w-8 grid place-content-center rounded-lg'
-			style={{scale}}
+			style={{ scale }}
 		>
 			<animated.div
 				id='icons'

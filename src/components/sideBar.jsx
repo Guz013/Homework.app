@@ -32,6 +32,7 @@ const SideBar = () => {
 		useSpring({
 			from: { opacity: 0 },
 			to: { opacity: opened ? 0.25 : 0 },
+			config: { duration: 500 },
 		}),
 		useSpring({ scale: 0 }),
 	];
@@ -49,14 +50,15 @@ const SideBar = () => {
 			<section id='sidebar' className='flex'>
 				<animated.footer
 					style={animSideBar}
-					className='w-80 sm:w-96 h-screen pl-2 rounded-r-3xl sm:rounded-none z-50 bg-zinc-100 dark:bg-zinc-900'
+					className={`w-80 sm:w-96 h-screen pl-2 rounded-r-3xl sm:rounded-none z-50 bg-zinc-100 dark:bg-zinc-900 transition-opacity ${
+						opened ? 'opacity-100' : 'duration-500 opacity-0'
+					}`}
 				>
 					<div id='sidebar-main' className='pt-1'>
 						<ThemeButton />
 					</div>
 
 					<div id='side-bar-bottom' className='font-mono bottom-2 absolute'>
-
 						<SocialButtons />
 						<p>By Guz013 &bull; {new Date().getFullYear()}</p>
 
@@ -118,7 +120,10 @@ const SideBar = () => {
 				}}
 				id='side-bar-background'
 				className='fixed top-0 bg-[#000000] w-screen h-screen'
-				style={animBg}
+				style={{
+					...animBg,
+					display: animBg.opacity.to((o) => (o === 0 ? 'none' : 'block')),
+				}}
 			></animated.div>
 		</div>
 	);
